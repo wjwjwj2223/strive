@@ -23,7 +23,7 @@ class ClassicModel extends HTTP {
       sCallback(classic)
       return
     }
-    let path = 'classic/${index}/${nextOrPrevious}'
+    let path = `classic/${index}/${nextOrPrevious}`
     this.request({
       url: path,
       success: (res)=> {
