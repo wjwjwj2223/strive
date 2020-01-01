@@ -1,11 +1,24 @@
 // pages/book-detail/book-detail.js
+
+import {
+  BookModel
+} from '../../models/book'
+import {
+  LikeModel
+} from '../../models/like.js'
+const bookModel = new BookModel()
+const likeModel = new LikeModel()
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    comments:[],
+    book:null,
+    likeStatus: false,
+    likeCount:0
   },
 
   /**
@@ -13,7 +26,27 @@ Page({
    */
   onLoad: function (options) {
     const bid = options.bid
-    console.log(bid)
+    const detail = bookModel.getDetail(bid)
+    const comments = bookModel.getComments(bid)
+    const likeStatus = bookModel.getLikeStatus(bid)
+    detail.then((res)=>{
+      this.setData({
+        book:res
+      })
+    })
+
+    comments.then((res)=>{
+      this.setData({
+        comments:res.comments
+      })
+    })
+
+    likeStatus.then((res)=>{
+      this.setData({
+        likeStatus:res.like_status,
+        likeCount:res.fav_nums
+      })
+    })
   },
 
   /**
@@ -21,6 +54,11 @@ Page({
    */
   onReady: function () {
 
+  },
+
+  onLike: function(event) {
+    const likeOrCancel = event.detail.behavior
+    likeModel.like(likeOrCancel, this.data.book.id, 400)
   },
 
   /**
