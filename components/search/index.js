@@ -11,7 +11,11 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
+    more: {
+      type: String,
+      observer: 'loadMore'
+      // true, true, true,
+    }
   },
 
   /**
@@ -77,6 +81,16 @@ Component({
         searching: false,
         q: ''
       })
-    }
+    },
+
+    loadMore() {
+      const length = this.data.dataArray.length
+      bookModel.search(length,this.data.q).then(res=>{
+        const tempArray = this.data.dataArray.concat(res.books)
+        this.setData({
+          dataArray: tempArray
+        })
+      })
+    },
   }
 })
