@@ -5,6 +5,7 @@ Component({
    */
   properties: {
     book: Object
+
   },
 
   /**
@@ -25,6 +26,5 @@ Component({
         url: `/pages/book-detail/book-detail?bid=${bid}`,
       })
     }
-
   }
 })

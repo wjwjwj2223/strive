@@ -19,7 +19,10 @@ Component({
    */
   data: {
     historyWords: [],
-    hotWords:[]
+    hotWords:[],
+    searching: false,
+    dataArray:[],
+    q: '',
   },
 
   attached() {
@@ -41,14 +44,38 @@ Component({
   methods: {
     onCancel(event) {
       this.triggerEvent('cancel', {}, {})
+      this.setData({
+        searching: false
+      })
     },
     onConfirm(event) {
-      const word = event.detail.value
-      keywordModel.addToHistory(word)
-
-      const q = event.detail.value
+      this._showResult()
+      const q = event.detail.value || event.detail.text
+      this.setData({
+        q: q
+      })
       bookModel.search(0,q).then((res)=>{
+        this.setData({
+          dataArray: res.books,
+        })
+        keywordModel.addToHistory(q)
+      })
+    },
 
+    onDelete(event) {
+      this._closeResult()
+    },
+
+    _showResult() {
+      this.setData({
+        searching: true
+      })
+    },
+
+    _closeResult() {
+      this.setData({
+        searching: false,
+        q: ''
       })
     }
   }
