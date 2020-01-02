@@ -30,6 +30,7 @@ class KeywordModel extends HTTP {
       wx.setStorageSync(this.key, words)
     }
   }
+  
 }
 
 export {KeywordModel}

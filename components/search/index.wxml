@@ -17,17 +17,22 @@
         <text>历史搜索</text>
       </view>
       <view class="tags">
-          <block wx:key="" wx:for="{{historyWords}}">
+        <block wx:key="" wx:for="{{historyWords}}">
             <v-tag class="v-tag" text="{{item}}"/>
-          </block>
-        </view>
+        </block>
+      </view>
     </view>
 
     <view class="history hot-search">
       <view class="title">
         <view class="chunk"></view>
         <text>热门搜索</text>
-      </view>        
+      </view>   
+      <view class="tags">
+        <block wx:key="" wx:for="{{hotWords}}">
+            <v-tag class="v-tag" text="{{item}}"/>
+        </block>
+      </view>
     </view>
 
   </view>

@@ -2,8 +2,10 @@
 import {
   KeywordModel
 } from "../../models/keyword.js"
+import { BookModel } from "../../models/book.js"
 
 const keywordModel = new KeywordModel()
+const bookModel = new BookModel()
 Component({
   /**
    * 组件的属性列表
@@ -16,14 +18,21 @@ Component({
    * 组件的初始数据
    */
   data: {
-    historyWords: []
+    historyWords: [],
+    hotWords:[]
   },
 
   attached() {
-    const historyWords = keywordModel.getHistory()
     this.setData({
-      historyWords: historyWords
+      historyWords: keywordModel.getHistory()
     })
+
+    keywordModel.getHot().then((res)=>{
+      this.setData({
+        hotWords: res.hot         
+      })
+    })
+    
   },
 
   /**
@@ -36,6 +45,11 @@ Component({
     onConfirm(event) {
       const word = event.detail.value
       keywordModel.addToHistory(word)
+
+      const q = event.detail.value
+      bookModel.search(0,q).then((res)=>{
+
+      })
     }
   }
 })
