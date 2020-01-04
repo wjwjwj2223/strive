@@ -2,11 +2,19 @@
 import {
   KeywordModel
 } from "../../models/keyword.js"
-import { BookModel } from "../../models/book.js"
+
+import { 
+  BookModel 
+} from "../../models/book.js"
+
+import {
+  paginationBev
+} from '../behaviors/pagination.js'
 
 const keywordModel = new KeywordModel()
 const bookModel = new BookModel()
 Component({
+  behaviors:[paginationBev],
   /**
    * 组件的属性列表
    */
@@ -25,8 +33,8 @@ Component({
     historyWords: [],
     hotWords:[],
     searching: false,
-    dataArray:[],
     q: '',
+    loadingCenter: false
   },
 
   attached() {
@@ -47,6 +55,7 @@ Component({
    */
   methods: {
     onCancel(event) {
+      this.initialize()
       this.triggerEvent('cancel', {}, {})
       this.setData({
         searching: false
@@ -54,19 +63,21 @@ Component({
     },
     onConfirm(event) {
       this._showResult()
+      this._showLoadingCenter()
       const q = event.detail.value || event.detail.text
       this.setData({
         q: q
       })
       bookModel.search(0,q).then((res)=>{
-        this.setData({
-          dataArray: res.books,
-        })
+        this.setMoreData(res.books)
+        this.setTotal(res.total)
         keywordModel.addToHistory(q)
+        this._hideLoadingCenter()
       })
     },
 
     onDelete(event) {
+      this.initialize()
       this._closeResult()
     },
 
@@ -83,13 +94,34 @@ Component({
       })
     },
 
+    _showLoadingCenter() {
+      this.setData({
+        loadingCenter: true
+      })
+    },
+
+    _hideLoadingCenter() {
+      this.setData({
+        loadingCenter: false
+      })
+    },
+
     loadMore() {
-      const length = this.data.dataArray.length
-      bookModel.search(length,this.data.q).then(res=>{
-        const tempArray = this.data.dataArray.concat(res.books)
-        this.setData({
-          dataArray: tempArray
-        })
+      if (!this.data.q) {
+        return
+      }
+      if (this.isLocked()) {
+        return
+      }
+      if (!this.hasMore()) {
+        return
+      }
+      this.locked()
+      bookModel.search(this.getCurrentStart(),this.data.q).then(res=>{
+        this.setMoreData(res.books)
+        this.unLocked()
+      },() => {
+        this.unLocked()
       })
     },
   }

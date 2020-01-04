@@ -119,3 +119,13 @@
 .book {
   margin-bottom: 25rpx;
 }
+
+.loading-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.loading {
+  margin: 50rpx 0 50rpx 0;
+}
