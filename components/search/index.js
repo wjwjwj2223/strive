@@ -64,6 +64,7 @@ Component({
     onConfirm(event) {
       this._showResult()
       this._showLoadingCenter()
+      this.initialize()
       const q = event.detail.value || event.detail.text
       this.setData({
         q: q

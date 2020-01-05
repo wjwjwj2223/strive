@@ -9,20 +9,19 @@ const random = function generateMixed(n) {
   return res;
 }
 
-const promisic = function(func) {
-  return function(params = {}) {
-    return new Promise((resolve, reject) => {
-      const args = Object.assign(params, {
-        success: (res) => {
-          resolve(res)
-        },
-        fail: (error) => {
-          reject(error)
-        }
-      })
-      func(args)
-    })
-  }
+const promisic = function (func) {
+  return new Promise((resolve, reject) => {
+    var args = {
+      success: (res) => {
+        resolve(res)
+      },
+      fail: (error) => {
+        reject(error)
+      }
+    }
+    func(args)
+  })
+
 }
 
 export {

@@ -143,7 +143,7 @@
 }
 
 .like {
-  margin-right: 30rpx;
+  margin-right: 10rpx;
   margin-top: 10rpx;
 }
 
@@ -205,4 +205,13 @@
 
 .shadow {
   color: #999;
+}
+
+.share-btn {
+  margin-top: 28rpx;
+}
+
+.share {
+  width: 40rpx;
+  height: 40rpx;
 }
